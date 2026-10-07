@@ -7,7 +7,7 @@ A loan application can feed three different kinds of calls. People-search sites 
 ## Install
 
 ```bash
-cd /home/iceroot/Projects/unlead
+cd unlead
 python3 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 .venv/bin/unlead --version
@@ -42,7 +42,7 @@ unlead handoff --case ~/unlead-case
 
 `probe --fields legal_name,phone` runs the minimum-field experiment with no case and no values. Name plus phone is enough to tell your row from someone who shares your name. It is often not what the opt-out form wants. Spokeo wants the listing URL and an email, so the default letter withholds the phone. A reverse-phone site sends the phone and withholds the name.
 
-Paste one file from `handoff/` into Grok, a GPT agent, Muse, or another browser agent. Finish that site, including any CAPTCHA or confirmation email yourself, then paste the next file. `unlead mark spokeo submitted --case ~/unlead-case` starts the recheck clock. Listings come back.
+Paste one file from `handoff/` into a browser agent you already use. Finish that site, including any CAPTCHA or confirmation email yourself, then paste the next file. `unlead mark spokeo submitted --case ~/unlead-case` starts the recheck clock. Listings come back.
 
 These stay manual, and the guide files contain none of your identifiers:
 
