@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from unlead.catalog import by_id
-from unlead.policy import LABELS, UnleadError
+from unlead.policy import LABELS, UnLeadError
 from unlead.score import field_plan, supplied_from_case
 from unlead.vault import selected_ids, write_private
 
@@ -14,10 +14,10 @@ _RESET_SUFFIXES = {".md", ".json"}
 
 def reset_output(path: Path) -> None:
     if path.is_symlink():
-        raise UnleadError("Refusing to use a symlinked output directory.")
+        raise UnLeadError("Refusing to use a symlinked output directory.")
     path.mkdir(parents=True, exist_ok=True)
     if path.is_symlink():
-        raise UnleadError("Refusing to use a symlinked output directory.")
+        raise UnLeadError("Refusing to use a symlinked output directory.")
     path.chmod(0o700)
     for child in path.iterdir():
         if child.is_symlink() or not child.is_file():
@@ -36,7 +36,7 @@ def _values(broker: dict, case: dict, send: list[str]) -> list[str]:
         else:
             value = identifiers.get(field, "")
         if not value:
-            raise UnleadError("A letter field has no value.")
+            raise UnLeadError("A letter field has no value.")
         lines.append(f"- {LABELS[field]}: {value}")
     return lines
 

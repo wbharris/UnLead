@@ -5,7 +5,7 @@ from __future__ import annotations
 from urllib.parse import urlsplit
 
 from unlead.brokers import BROKERS, CATALOG_BASIS, CATALOG_COUNT, CATALOG_REVISED
-from unlead.policy import ALLOWED_FIELDS, HOLDING_CATEGORIES, UnleadError, check_broker_id, host_allowed
+from unlead.policy import ALLOWED_FIELDS, HOLDING_CATEGORIES, UnLeadError, check_broker_id, host_allowed
 
 _STATUSES = {"open", "human_only", "closed"}
 _KINDS = {"people_search", "marketing", "registry", "biometric", "search_engine"}
@@ -16,9 +16,9 @@ _REQUIRED_NEVER = {"ssn", "government_id", "date_of_birth", "password", "biometr
 def _https_host(url: str, broker_id: str) -> str:
     parts = urlsplit(url)
     if parts.scheme != "https" or not parts.hostname:
-        raise UnleadError(f"{broker_id}: opt-out URL must be https.")
+        raise UnLeadError(f"{broker_id}: opt-out URL must be https.")
     if parts.username or parts.password or parts.query or parts.fragment:
-        raise UnleadError(f"{broker_id}: opt-out URL must not carry a query, fragment, or login.")
+        raise UnLeadError(f"{broker_id}: opt-out URL must not carry a query, fragment, or login.")
     return parts.hostname
 
 
@@ -26,51 +26,51 @@ def validate_broker(raw: dict) -> dict:
     broker = dict(raw)
     broker_id = broker.get("id", "")
     if not isinstance(broker_id, str) or not broker_id:
-        raise UnleadError("Broker is missing an id.")
+        raise UnLeadError("Broker is missing an id.")
     check_broker_id(broker_id)
     status = broker.get("status")
     if status not in _STATUSES:
-        raise UnleadError(f"{broker_id}: bad status.")
+        raise UnLeadError(f"{broker_id}: bad status.")
     if broker.get("kind") not in _KINDS:
-        raise UnleadError(f"{broker_id}: bad kind.")
+        raise UnLeadError(f"{broker_id}: bad kind.")
     if broker.get("flow") not in _FLOWS:
-        raise UnleadError(f"{broker_id}: bad flow.")
+        raise UnLeadError(f"{broker_id}: bad flow.")
     requires = list(broker.get("form_requires") or [])
     match = list(broker.get("match_with") or [])
     optional = list(broker.get("form_optional") or [])
     for field in requires + match + optional:
         if field not in ALLOWED_FIELDS:
-            raise UnleadError(f"{broker_id}: field {field} is not on the allowlist.")
+            raise UnLeadError(f"{broker_id}: field {field} is not on the allowlist.")
     if set(requires) & set(optional):
-        raise UnleadError(f"{broker_id}: a field is both required and optional.")
+        raise UnLeadError(f"{broker_id}: a field is both required and optional.")
     never = set(broker.get("never_send") or [])
     if not _REQUIRED_NEVER <= never:
-        raise UnleadError(f"{broker_id}: never_send is missing a required secret.")
+        raise UnLeadError(f"{broker_id}: never_send is missing a required secret.")
     for category in broker.get("typical_holdings") or []:
         if category not in HOLDING_CATEGORIES:
-            raise UnleadError(f"{broker_id}: unknown holding category {category}.")
+            raise UnLeadError(f"{broker_id}: unknown holding category {category}.")
     hint = broker.get("hint") or ""
     if ("http" + "://") in hint or ("https" + "://") in hint:
-        raise UnleadError(f"{broker_id}: hint must not contain a URL.")
+        raise UnLeadError(f"{broker_id}: hint must not contain a URL.")
     hosts = list(broker.get("allowed_hosts") or [])
     url = broker.get("opt_out_url")
     if status == "closed":
         if url or hosts or broker.get("agent_allowed") or requires:
-            raise UnleadError(f"{broker_id}: a closed site has no URL and no agent packet.")
+            raise UnLeadError(f"{broker_id}: a closed site has no URL and no agent packet.")
     else:
         if not url:
-            raise UnleadError(f"{broker_id}: missing opt-out URL.")
+            raise UnLeadError(f"{broker_id}: missing opt-out URL.")
         host = _https_host(url, broker_id)
         if not host_allowed(host, hosts):
-            raise UnleadError(f"{broker_id}: opt-out host is not in allowed_hosts.")
+            raise UnLeadError(f"{broker_id}: opt-out host is not in allowed_hosts.")
         if status == "open" and not requires:
-            raise UnleadError(f"{broker_id}: an open site needs at least one required field.")
+            raise UnLeadError(f"{broker_id}: an open site needs at least one required field.")
         if status == "human_only" and broker.get("agent_allowed"):
-            raise UnleadError(f"{broker_id}: human-only sites are not handed to an agent.")
+            raise UnLeadError(f"{broker_id}: human-only sites are not handed to an agent.")
         if status == "open" and not broker.get("agent_allowed"):
-            raise UnleadError(f"{broker_id}: open sites are agent-ready once their fields are filled.")
+            raise UnLeadError(f"{broker_id}: open sites are agent-ready once their fields are filled.")
     if status == "closed" and broker.get("flow") != "none":
-        raise UnleadError(f"{broker_id}: closed flow must be none.")
+        raise UnLeadError(f"{broker_id}: closed flow must be none.")
     return broker
 
 
@@ -82,18 +82,18 @@ def load_catalog() -> list[dict]:
         broker = validate_broker(raw)
         broker_id = broker["id"]
         if broker_id in seen:
-            raise UnleadError(f"Duplicate broker id {broker_id}.")
+            raise UnLeadError(f"Duplicate broker id {broker_id}.")
         seen.add(broker_id)
         keys = {broker_id, broker["name"].casefold()}
         for alias in broker.get("aliases") or []:
             keys.add(alias.casefold())
         for key in keys:
             if key in aliases and aliases[key] != broker_id:
-                raise UnleadError(f"Alias {key} is used twice.")
+                raise UnLeadError(f"Alias {key} is used twice.")
             aliases[key] = broker_id
         brokers.append(broker)
     if len(brokers) != CATALOG_COUNT:
-        raise UnleadError(f"Catalog count is {len(brokers)}, expected {CATALOG_COUNT}.")
+        raise UnLeadError(f"Catalog count is {len(brokers)}, expected {CATALOG_COUNT}.")
     return brokers
 
 
@@ -125,18 +125,18 @@ def get_broker(token: str) -> tuple[dict, bool]:
     key = token.strip().casefold()
     broker_id = alias_map().get(key)
     if broker_id is None:
-        raise UnleadError(f"Unknown site {token}. Run `unlead sites`.")
+        raise UnLeadError(f"Unknown site {token}. Run `unlead sites`.")
     for broker in catalog():
         if broker["id"] == broker_id:
             return broker, key != broker_id and key != broker["name"].casefold()
-    raise UnleadError(f"Unknown site {token}.")
+    raise UnLeadError(f"Unknown site {token}.")
 
 
 def by_id(broker_id: str) -> dict:
     for broker in catalog():
         if broker["id"] == broker_id:
             return broker
-    raise UnleadError(f"Unknown site {broker_id}.")
+    raise UnLeadError(f"Unknown site {broker_id}.")
 
 
 def catalog_meta() -> dict:

@@ -222,7 +222,7 @@ BROKERS = [
         hint="Let the human open the confirmation email the same day. The link expires quickly.",
         basis=(
             "Encovert's guide dated 2026-10-05 says the form is at /optout and starts with name plus email. "
-            "The 2026-09-28 master list shows /removal. Unlead uses /optout."
+            "The 2026-09-28 master list shows /removal. UnLead uses /optout."
         ),
     ),
     entry(
@@ -574,7 +574,7 @@ BROKERS = [
         hint="",
         notes=(
             "2026 guides describe a footer control labeled Remove My Info and do not publish a stable "
-            "deep link. The homepage is a search box, so Unlead does not give it to an agent. "
+            "deep link. The homepage is a search box, so UnLead does not give it to an agent. "
             "Open it yourself, use that footer control, and stop if you cannot find it."
         ),
         basis="Footer removal flow described by 2026 opt-out guides. No stable deep link verified for an agent.",
@@ -614,7 +614,7 @@ BROKERS = [
         notes=(
             "Official opt-out for prescreened firm offers of credit and insurance, run for the credit bureaus. "
             "The form asks for your Social Security number and date of birth. "
-            "Unlead does not store those and does not put them in an agent packet. "
+            "UnLead does not store those and does not put them in an agent packet. "
             "Five years can be done on the site. Permanent is a form you mail back. "
             "Phone 1-888-567-8688 is the same program."
         ),
@@ -703,7 +703,7 @@ BROKERS = [
         stop_if_asked=["a photo", "a face image", "an ID image"],
         notes=(
             "Removal asks for a face photo or an ID image. That gives the site a new biometric. "
-            "Unlead does not draft an upload. Skip this unless you already know they have a photo, "
+            "UnLead does not draft an upload. Skip this unless you already know they have a photo, "
             "and then use their page yourself."
         ),
         basis="Opt-out URL on the 2026-09-28 master list.",
@@ -720,7 +720,7 @@ BROKERS = [
         typical_holdings=["photo"],
         aliases=["facecheck", "face check"],
         notes=(
-            "Removal asks for a photo or an ID. Unlead does not draft an upload and does not write an agent packet."
+            "Removal asks for a photo or an ID. UnLead does not draft an upload and does not write an agent packet."
         ),
         basis="Removal URL on the 2026-09-28 master list.",
     ),
@@ -759,7 +759,7 @@ BROKERS = [
             "Report a scam loan call here. This is not a broker opt-out. "
             "Write down the number, the time, and the pitch before you start. "
             "Do not give the caller a code, a payment, or a new account number. "
-            "Unlead does not file this report for you."
+            "UnLead does not file this report for you."
         ),
         basis="Federal Trade Commission report-fraud site.",
     ),

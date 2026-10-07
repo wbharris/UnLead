@@ -1,6 +1,6 @@
-# Unlead product notes
+# UnLead product notes
 
-Unlead prepares opt-out requests for the person operating it. The case file stays on that computer. A browser agent, if the person uses one, receives one site at a time and only the fields that site's published form needs.
+UnLead prepares opt-out requests for the person operating it. The case file stays on that computer. A browser agent, if the person uses one, receives one site at a time and only the fields that site's published form needs.
 
 ## Minimum fields
 
@@ -12,7 +12,7 @@ Submission is a second, smaller set. For each broker the catalog stores:
 
 - `form_requires` — the form does not finish without these
 - `match_with` — the form uses these to find the existing row
-- `form_optional` — the form offers these, and Unlead withholds them unless you pass `--include-optional`
+- `form_optional` — the form offers these, and UnLead withholds them unless you pass `--include-optional`
 
 The letter and the agent packet send the intersection of what you stored and `form_requires` ∪ `match_with`. A stored city stays in the case and out of a Spokeo request, because Spokeo matches on the listing URL. The same phone is sent to USPhoneBook, because that form matches on the phone.
 
@@ -20,7 +20,7 @@ The letter and the agent packet send the intersection of what you stored and `fo
 
 ## What a listing contains
 
-Unlead does not know what a site holds about you. Typical categories on a catalog entry are labeled as typical, not as a finding. After you look at your own row, `unlead holdings set` records categories: name, phone, email, address, relatives, age, employer, photo. A street address or a relative's name is rejected. The letter says which categories you saw, or that you have not confirmed a listing, and it tells the broker to discard the request if nothing matches rather than create a record from it.
+UnLead does not know what a site holds about you. Typical categories on a catalog entry are labeled as typical, not as a finding. After you look at your own row, `unlead holdings set` records categories: name, phone, email, address, relatives, age, employer, photo. A street address or a relative's name is rejected. The letter says which categories you saw, or that you have not confirmed a listing, and it tells the broker to discard the request if nothing matches rather than create a record from it.
 
 ## Agent packets
 

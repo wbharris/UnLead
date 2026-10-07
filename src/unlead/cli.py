@@ -1,4 +1,4 @@
-"""Command line for Unlead."""
+"""Command line for UnLead."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from unlead.policy import (
     ALLOWED_FIELDS,
     FIELD_ORDER,
     FORBIDDEN_KEYS,
-    UnleadError,
+    UnLeadError,
     scan_package_sources,
 )
 from unlead.score import (
@@ -48,9 +48,9 @@ from unlead.vault import (
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="unlead",
-        description="Local opt-outs for your own people-search and data-broker listings.",
+        description="UnLead — local opt-outs for your own people-search and data-broker listings.",
     )
-    parser.add_argument("--version", action="version", version=f"unlead {__version__}")
+    parser.add_argument("--version", action="version", version=f"UnLead {__version__}")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     init = sub.add_parser("init", help="Create a case for your own opt-out")
@@ -165,7 +165,7 @@ def resolve_case(args: argparse.Namespace) -> Path:
     default = Path("unlead-case")
     if (default / "case.json").is_file():
         return default
-    raise UnleadError("Pass --case DIR, or set UNLEAD_CASE.")
+    raise UnLeadError("Pass --case DIR, or set UNLEAD_CASE.")
 
 
 def _warn_case(directory: Path) -> None:
@@ -185,7 +185,7 @@ def cmd_init(args: argparse.Namespace) -> int:
     if sys.stdin.isatty():
         identifiers = _prompt_missing_identity(identifiers)
     if "legal_name" not in identifiers or "phone" not in identifiers:
-        raise UnleadError("Pass --name and --phone, or run init in a terminal.")
+        raise UnLeadError("Pass --name and --phone, or run init in a terminal.")
     directory = Path(args.case)
     init_case(directory, identifiers)
     stored = ", ".join(key for key in FIELD_ORDER if key in identifiers)
@@ -248,12 +248,12 @@ def _parse_fields(text: str) -> set[str]:
         if not field:
             continue
         if field in FORBIDDEN_KEYS:
-            raise UnleadError("That field is not part of the experiment.")
+            raise UnLeadError("That field is not part of the experiment.")
         if field not in ALLOWED_FIELDS:
-            raise UnleadError(f"Unknown field {field}.")
+            raise UnLeadError(f"Unknown field {field}.")
         fields.add(field)
     if not fields:
-        raise UnleadError("Pass at least one field name.")
+        raise UnLeadError("Pass at least one field name.")
     return fields
 
 
@@ -335,7 +335,7 @@ def _brokers_for_select(args: argparse.Namespace) -> list[dict]:
                 chosen.append(broker)
                 seen.add(broker["id"])
     if not chosen:
-        raise UnleadError("Name a site, or pass --tier or --kind.")
+        raise UnLeadError("Name a site, or pass --tier or --kind.")
     return chosen
 
 
@@ -422,7 +422,7 @@ def cmd_ask(args: argparse.Namespace) -> int:
                     set_holdings(case, broker, url=answer)
                 else:
                     set_identifier(case, question.field, answer)
-            except UnleadError as exc:
+            except UnLeadError as exc:
                 print(str(exc))
                 continue
             save_case(directory, case)
@@ -540,7 +540,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         args = _parser().parse_args(argv)
         return args.func(args)
-    except UnleadError as exc:
+    except UnLeadError as exc:
         print(str(exc), file=sys.stderr)
         return 2
 

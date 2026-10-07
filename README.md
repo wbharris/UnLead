@@ -1,6 +1,6 @@
-# Unlead
+# UnLead
 
-Unlead is a local opt-out case for your own people-search and data-broker listings. You store a name and a phone number on this computer. Unlead scores every site in its catalog against those fields, writes the opt-out each selected site actually requires, and writes one packet per site for a browser agent you already use.
+UnLead is a local opt-out case for your own people-search and data-broker listings. You store a name and a phone number on this computer. UnLead scores every site in its catalog against those fields, writes the opt-out each selected site actually requires, and writes one packet per site for a browser agent you already use.
 
 A loan application can feed three different kinds of calls. People-search sites already publish a name, a phone, and an address. Credit bureaus sell prescreened firm offers, with a mortgage-specific limit that started in March 2026. Scam callers are neither of those. `unlead explain loan` separates the three.
 
@@ -23,7 +23,7 @@ PYTHONPATH=src python3 -m unlead --version
 
 `unlead prompt` prints this:
 
-> Score each broker in the Unlead catalog against the name and phone stored in this local case. Say which of those fields each opt-out form actually needs, and which fields the case will withhold. For the sites I select, record only the categories I confirm I saw on my own listing. Write the exact opt-out for each selected site, then write one agent packet per site that is ready. I will paste a single packet into a browser agent I already use. That agent opens one official opt-out URL and enters only the packet's fields.
+> Score each broker in the UnLead catalog against the name and phone stored in this local case. Say which of those fields each opt-out form actually needs, and which fields the case will withhold. For the sites I select, record only the categories I confirm I saw on my own listing. Write the exact opt-out for each selected site, then write one agent packet per site that is ready. I will paste a single packet into a browser agent I already use. That agent opens one official opt-out URL and enters only the packet's fields.
 
 ## Use
 
@@ -53,7 +53,7 @@ unlead guide ftc-report
 unlead guide drop
 ```
 
-OptOutPrescreen asks for a Social Security number and a date of birth. File that one in your own browser. Unlead will not store those and will not put them in a packet.
+OptOutPrescreen asks for a Social Security number and a date of birth. File that one in your own browser. UnLead will not store those and will not put them in a packet.
 
 ## What the case holds
 

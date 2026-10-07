@@ -122,52 +122,52 @@ _NETWORK_IMPORTS = (
 )
 
 
-class UnleadError(ValueError):
+class UnLeadError(ValueError):
     """A problem the user can fix. The message must not echo a secret they typed."""
 
 
 def clean_line(value: str, label: str, limit: int = 200) -> str:
     if not isinstance(value, str):
-        raise UnleadError(f"{label} must be text.")
+        raise UnLeadError(f"{label} must be text.")
     if any(ord(ch) < 32 or ord(ch) == 127 for ch in value):
-        raise UnleadError(f"{label} must be a single line.")
+        raise UnLeadError(f"{label} must be a single line.")
     text = value.strip()
     if not text:
-        raise UnleadError(f"{label} is empty.")
+        raise UnLeadError(f"{label} is empty.")
     if len(text) > limit:
-        raise UnleadError(f"{label} is too long.")
+        raise UnLeadError(f"{label} is too long.")
     return text
 
 
 def validate_name(value: str) -> str:
     text = clean_line(value, "Name", 120)
     if any(ch.isdigit() for ch in text):
-        raise UnleadError("A name does not include digits.")
+        raise UnLeadError("A name does not include digits.")
     folded = text.casefold()
     if " and " in folded or " & " in text or ";" in text:
-        raise UnleadError("Use one person's name. This case is for your own opt-out.")
+        raise UnLeadError("Use one person's name. This case is for your own opt-out.")
     if len(text) < 3:
-        raise UnleadError("Name is too short.")
+        raise UnLeadError("Name is too short.")
     return text
 
 
 def validate_phone(value: str) -> str:
     text = clean_line(value, "Phone", 40)
     if any(ch not in "0123456789 +-()." for ch in text):
-        raise UnleadError("Phone may contain digits, spaces, and + - ( ) .")
+        raise UnLeadError("Phone may contain digits, spaces, and + - ( ) .")
     digits = "".join(ch for ch in text if ch.isdigit())
     if len(digits) < 10 or len(digits) > 15:
-        raise UnleadError("Use one phone number, 10 to 15 digits.")
+        raise UnLeadError("Use one phone number, 10 to 15 digits.")
     return text
 
 
 def validate_email(value: str) -> str:
     text = clean_line(value, "Email")
     if text.count("@") != 1 or " " in text:
-        raise UnleadError("Email needs a single @ and no spaces.")
+        raise UnLeadError("Email needs a single @ and no spaces.")
     local, domain = text.split("@")
     if not local or "." not in domain or domain.startswith(".") or domain.endswith("."):
-        raise UnleadError("Email does not look usable.")
+        raise UnLeadError("Email does not look usable.")
     return text
 
 
@@ -177,12 +177,12 @@ def validate_place(value: str, label: str) -> str:
 
 def validate_identifier(key: str, value: str) -> str:
     if key in FORBIDDEN_KEYS:
-        raise UnleadError(
-            "Unlead does not store that. "
+        raise UnLeadError(
+            "UnLead does not store that. "
             "Social Security numbers, dates of birth, IDs, passwords, and biometrics stay out of the case."
         )
     if key not in IDENTIFIER_FIELDS:
-        raise UnleadError(f"Unknown field {key}.")
+        raise UnLeadError(f"Unknown field {key}.")
     if key == "legal_name":
         return validate_name(value)
     if key == "phone":
@@ -195,7 +195,7 @@ def validate_identifier(key: str, value: str) -> str:
         return validate_place(value, "City")
     if key == "postal_code":
         return validate_place(value, "Postal code")
-    raise UnleadError(f"Unknown field {key}.")
+    raise UnLeadError(f"Unknown field {key}.")
 
 
 def host_allowed(host: str, suffixes: list[str]) -> bool:
@@ -213,13 +213,13 @@ def validate_profile_url(url: str, broker: dict) -> str:
     text = clean_line(url, "Profile URL", 500)
     parts = urlsplit(text)
     if parts.scheme != "https" or not parts.hostname:
-        raise UnleadError("Profile URL must be an https address.")
+        raise UnLeadError("Profile URL must be an https address.")
     if parts.username or parts.password:
-        raise UnleadError("Profile URL must not include a username or password.")
+        raise UnLeadError("Profile URL must not include a username or password.")
     if parts.query or parts.fragment:
-        raise UnleadError("Paste the listing path without a query string or fragment.")
+        raise UnLeadError("Paste the listing path without a query string or fragment.")
     if not host_allowed(parts.hostname, broker["allowed_hosts"]):
-        raise UnleadError(
+        raise UnLeadError(
             f"That host is not {broker['name']}. Paste a listing on that broker's own site, or skip."
         )
     return text
@@ -231,7 +231,7 @@ def validate_holdings(categories: list[str]) -> list[str]:
         text = clean_line(item, "Holding", 40).casefold()
         if text not in HOLDING_CATEGORIES:
             allowed = ", ".join(HOLDING_CATEGORIES)
-            raise UnleadError(f"Holdings are categories ({allowed}), not a copy of the page.")
+            raise UnLeadError(f"Holdings are categories ({allowed}), not a copy of the page.")
         if text not in cleaned:
             cleaned.append(text)
     return cleaned
@@ -239,7 +239,7 @@ def validate_holdings(categories: list[str]) -> list[str]:
 
 def check_broker_id(broker_id: str) -> str:
     if not _ID_RE.match(broker_id):
-        raise UnleadError("Broker id must be a short slug.")
+        raise UnLeadError("Broker id must be a short slug.")
     return broker_id
 
 

@@ -85,7 +85,7 @@ def write_handoff(directory: Path, case: dict, include_optional: bool = False) -
         "# Agent packets",
         "",
         "Give a browser agent one file from this directory. Wait until that site is done, then pick the next file.",
-        "Unlead does not send these files anywhere.",
+        "UnLead does not send these files anywhere.",
         "",
     ]
     brokers = [by_id(broker_id) for broker_id in selected_ids(case)]

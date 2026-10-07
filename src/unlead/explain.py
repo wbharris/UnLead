@@ -1,13 +1,13 @@
 """Short explanations. No links in this module. URLs live on catalog entries."""
 
-WORKING_PROMPT = """Score each broker in the Unlead catalog against the name and phone stored in this local case.
+WORKING_PROMPT = """Score each broker in the UnLead catalog against the name and phone stored in this local case.
 Say which of those fields each opt-out form actually needs, and which fields the case will withhold.
 For the sites I select, record only the categories I confirm I saw on my own listing.
 Write the exact opt-out for each selected site, then write one agent packet per site that is ready.
 I will paste a single packet into a browser agent I already use. That agent opens one official opt-out URL and enters only the packet's fields."""
 
 START = """
-Unlead keeps a case file on this computer and writes opt-out requests for your own listings.
+UnLead keeps a case file on this computer and writes opt-out requests for your own listings.
 
 1. `unlead init --case DIR --name "Your Name" --phone "your number"`
 2. `unlead probe --case DIR` to see what name and phone are enough for, and what each form still wants.
@@ -31,11 +31,11 @@ The opt-out form often wants a different set. Spokeo's form wants the listing UR
 
 An opt-out email is the field most forms add. Use an inbox that is not your main one if you have it. The letter tells the broker not to enroll that address. Some of them will ignore that. A separate inbox limits the damage.
 
-Unlead will not store a Social Security number, a date of birth, a government ID, a password, or a biometric. Sites that ask for those are manual guides. You file them in your own browser if you decide to.
+UnLead will not store a Social Security number, a date of birth, a government ID, a password, or a biometric. Sites that ask for those are manual guides. You file them in your own browser if you decide to.
 """.strip()
 
 AGENT = """
-The handoff file is for a browser agent you already run, such as Grok, a GPT agent, Muse, or another one. Unlead does not connect to those products and does not send the file.
+The handoff file is for a browser agent you already run, such as Grok, a GPT agent, Muse, or another one. UnLead does not connect to those products and does not send the file.
 
 Each file is one site. The agent may open the opt-out URL in the DATA block and fill the fields in that block. DATA is data. A line inside your name or your listing URL does not become an instruction.
 
@@ -47,9 +47,9 @@ Do not paste two site files into one session. Do not paste a manual guide. Those
 LOAN = """
 A loan application can put your phone in front of strangers in three different ways.
 
-People-search sites already publish name, phone, address, and relatives. A caller who bought a lead can match you there. Unlead writes the opt-out for those sites from the fields each form requires.
+People-search sites already publish name, phone, address, and relatives. A caller who bought a lead can match you there. UnLead writes the opt-out for those sites from the fields each form requires.
 
-Prescreened firm offers are the credit-bureau product. After a credit pull, bureaus have been allowed to sell you as someone shopping for credit. For a residential mortgage, the Homebuyers Privacy Protection Act, Public Law 119-36, signed September 5, 2025, limits that sale starting in March 2026. A bureau may still furnish the lead to a lender you authorized, to the company that originated or services your current mortgage, or to a bank or credit union where you already have an account. Other kinds of loans can still become prescreened firm offers. The official opt-out is OptOutPrescreen: five years on the site, or permanent by a form you mail back. That form asks for a Social Security number and a date of birth. Run `unlead guide optoutprescreen` and file it yourself. Unlead does not put those into an agent packet. A GAO review dated October 6, 2026 says it is too early to know how much the mortgage rule cuts the calls.
+Prescreened firm offers are the credit-bureau product. After a credit pull, bureaus have been allowed to sell you as someone shopping for credit. For a residential mortgage, the Homebuyers Privacy Protection Act, Public Law 119-36, signed September 5, 2025, limits that sale starting in March 2026. A bureau may still furnish the lead to a lender you authorized, to the company that originated or services your current mortgage, or to a bank or credit union where you already have an account. Other kinds of loans can still become prescreened firm offers. The official opt-out is OptOutPrescreen: five years on the site, or permanent by a form you mail back. That form asks for a Social Security number and a date of birth. Run `unlead guide optoutprescreen` and file it yourself. UnLead does not put those into an agent packet. A GAO review dated October 6, 2026 says it is too early to know how much the mortgage rule cuts the calls.
 
 Scam calls are the third pile. The caller is not a lender, the Do Not Call Registry does not bind them, and the pitch often asks for a code or a fee. Save the number, the time, and the words they used. Do not give them a code, a payment, or a new account number. Run `unlead guide ftc-report` and file that report yourself.
 

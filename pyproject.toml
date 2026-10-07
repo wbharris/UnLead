@@ -1,13 +1,17 @@
 [project]
 name = "unlead"
 version = "0.1.0"
-description = "Local opt-out case for people-search and data-broker listings. Minimum fields, one site at a time."
+description = "UnLead — local opt-out case for people-search and data-broker listings. Minimum fields, one site at a time."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "GPL-3.0-or-later" }
 authors = [{ name = "wbharris" }]
 keywords = ["privacy", "opt-out", "data-broker", "people-search"]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/wbharris/UnLead"
+Repository = "https://github.com/wbharris/UnLead"
 
 [project.scripts]
 unlead = "unlead.cli:main"

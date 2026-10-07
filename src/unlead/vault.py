@@ -1,4 +1,4 @@
-"""Local case file. Mode 0600. One subject: the person operating Unlead."""
+"""Local case file. Mode 0600. One subject: the person operating UnLead."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 from unlead.policy import (
     FORBIDDEN_KEYS,
     IDENTIFIER_FIELDS,
-    UnleadError,
+    UnLeadError,
     validate_holdings,
     validate_identifier,
     validate_profile_url,
@@ -34,7 +34,7 @@ def case_path(directory: Path) -> Path:
 
 def _refuse_symlink(path: Path, label: str) -> None:
     if path.is_symlink():
-        raise UnleadError(f"Refusing to use a symlinked {label}.")
+        raise UnLeadError(f"Refusing to use a symlinked {label}.")
 
 
 def ensure_private_dir(path: Path) -> None:
@@ -66,13 +66,13 @@ def new_case() -> dict:
 
 def _check_shape(data: dict) -> None:
     if data.get("schema") != 1 or data.get("subject") != "self":
-        raise UnleadError("This case is not an Unlead file for your own opt-out.")
+        raise UnLeadError("This case is not an UnLead file for your own opt-out.")
     identifiers = data.get("identifiers")
     if not isinstance(identifiers, dict):
-        raise UnleadError("Case identifiers are unreadable.")
+        raise UnLeadError("Case identifiers are unreadable.")
     for key in identifiers:
         if key in FORBIDDEN_KEYS or key not in IDENTIFIER_FIELDS:
-            raise UnleadError("Case file contains a field Unlead will not keep.")
+            raise UnLeadError("Case file contains a field UnLead will not keep.")
 
 
 def load_case(directory: Path) -> dict:
@@ -80,11 +80,11 @@ def load_case(directory: Path) -> dict:
     _refuse_symlink(directory, "directory")
     _refuse_symlink(path, "case file")
     if not path.is_file():
-        raise UnleadError(f"No case at {directory}. Run `unlead init --case {directory}`.")
+        raise UnLeadError(f"No case at {directory}. Run `unlead init --case {directory}`.")
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
-        raise UnleadError("Case file is not valid JSON.") from exc
+        raise UnLeadError("Case file is not valid JSON.") from exc
     _check_shape(data)
     data.setdefault("sites", {})
     return data
@@ -98,16 +98,16 @@ def save_case(directory: Path, data: dict) -> None:
 def init_case(directory: Path, identifiers: dict[str, str]) -> dict:
     path = case_path(directory)
     if path.exists() or path.is_symlink():
-        raise UnleadError("A case already exists there.")
+        raise UnLeadError("A case already exists there.")
     data = new_case()
     for key, value in identifiers.items():
         data["identifiers"][key] = validate_identifier(key, value)
     if "legal_name" not in data["identifiers"] or "phone" not in data["identifiers"]:
-        raise UnleadError("Init needs your name and one phone number.")
+        raise UnLeadError("Init needs your name and one phone number.")
     save_case(directory, data)
     write_private(
         directory / "README.txt",
-        "Unlead case. Local opt-out file for your own listings. Do not commit this directory.\n",
+        "UnLead case. Local opt-out file for your own listings. Do not commit this directory.\n",
     )
     return data
 
@@ -118,9 +118,9 @@ def set_identifier(case: dict, key: str, value: str) -> None:
 
 def unset_identifier(case: dict, key: str) -> None:
     if key in FORBIDDEN_KEYS:
-        raise UnleadError("Unlead does not store that.")
+        raise UnLeadError("UnLead does not store that.")
     if key not in IDENTIFIER_FIELDS:
-        raise UnleadError(f"Unknown field {key}.")
+        raise UnLeadError(f"Unknown field {key}.")
     case["identifiers"].pop(key, None)
 
 
@@ -135,7 +135,7 @@ def _site(case: dict, broker_id: str) -> dict:
 def select_site(case: dict, broker: dict) -> bool:
     """Select a site. Return True if it was already selected."""
     if broker["status"] == "closed":
-        raise UnleadError(
+        raise UnLeadError(
             f"{broker['name']} is closed. Do not open the old domain. `unlead sites {broker['id']}` has the reason."
         )
     record = _site(case, broker["id"])
@@ -152,12 +152,12 @@ def unselect_site(case: dict, broker_id: str) -> None:
 
 def set_holdings(case: dict, broker: dict, seen: str | None = None, holdings: list[str] | None = None, url: str | None = None) -> None:
     if broker["status"] == "closed":
-        raise UnleadError(f"{broker['name']} is closed. Do not open the old domain.")
+        raise UnLeadError(f"{broker['name']} is closed. Do not open the old domain.")
     record = _site(case, broker["id"])
     record["selected"] = True
     if seen is not None:
         if seen not in {"yes", "no", "unconfirmed"}:
-            raise UnleadError("Seen must be yes, no, or unconfirmed.")
+            raise UnLeadError("Seen must be yes, no, or unconfirmed.")
         record["seen"] = seen
     if holdings is not None:
         record["holdings"] = validate_holdings(holdings)
@@ -167,16 +167,16 @@ def set_holdings(case: dict, broker: dict, seen: str | None = None, holdings: li
 
 def mark_site(case: dict, broker: dict, status: str, day: str) -> None:
     if broker["status"] == "closed":
-        raise UnleadError(f"{broker['name']} is closed.")
+        raise UnLeadError(f"{broker['name']} is closed.")
     if status not in {"draft", "submitted", "confirmed"}:
-        raise UnleadError("Mark status must be draft, submitted, or confirmed.")
+        raise UnLeadError("Mark status must be draft, submitted, or confirmed.")
     try:
         date.fromisoformat(day)
     except ValueError as exc:
-        raise UnleadError("Date must be YYYY-MM-DD.") from exc
+        raise UnLeadError("Date must be YYYY-MM-DD.") from exc
     record = _site(case, broker["id"])
     if not record.get("selected"):
-        raise UnleadError("Select the site before marking it.")
+        raise UnLeadError("Select the site before marking it.")
     record["status"] = status
     if status == "draft":
         record["submitted_on"] = ""
